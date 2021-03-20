@@ -2,17 +2,62 @@
 body {
   background-color: #222;
   color: #fafafa;
-  font-family: "Poppins", sans-serif;
+  font-family: 'Poppins', sans-serif;
 }
 
-table tr {
+input {
+  font-family: 'Poppins', sans-serif;
+}
+
+#header {
+  text-align: center;
+  padding: 20px;
+}
+
+#header input#kInput {
+  border: none;
+  height: 30px;
+  width: 120px;
+  background: #444;
+  color: #fafafa;
+  text-align: center;
+  font-weight: bold;
+  border-bottom: solid 2px grey;
+  border-radius: 5px 5px 0 0;
+  position: relative;
+  outline: none;
+}
+
+#header input#kInput:not(:focus)::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#header input#kInput:hover:not(:focus) {
+  cursor: pointer;
+}
+
+#header input#kInput:hover:not(:focus)::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#content {
+  padding: 20px 0;
+}
+
+#content table {
+  margin: 0 auto;
+}
+
+#content table tr {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
 }
 
-table th,
-table td {
+#content table th,
+#content table td {
   width: 100px;
   height: 30px;
   margin: 1px;
@@ -28,13 +73,13 @@ table td {
           justify-content: center;
 }
 
-table th.clear,
-table td.clear {
+#content table th.clear,
+#content table td.clear {
   background: none;
 }
 
-table th input,
-table td input {
+#content table th input,
+#content table td input {
   width: 100%;
   height: 100%;
   background: none;
@@ -42,33 +87,63 @@ table td input {
   text-align: center;
 }
 
-table th input:not(:focus)::-webkit-inner-spin-button,
-table td input:not(:focus)::-webkit-inner-spin-button {
+#content table th input:not(:focus)::-webkit-inner-spin-button,
+#content table td input:not(:focus)::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-table th input:hover:not(:focus),
-table td input:hover:not(:focus) {
+#content table th input:hover:not(:focus),
+#content table td input:hover:not(:focus) {
   cursor: pointer;
 }
 
-table th input:hover:not(:focus)::-webkit-inner-spin-button,
-table td input:hover:not(:focus)::-webkit-inner-spin-button {
+#content table th input:hover:not(:focus)::-webkit-inner-spin-button,
+#content table td input:hover:not(:focus)::-webkit-inner-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-table th {
+#content table th {
   background-color: #ffcd93;
   color: #222;
 }
 
-table td {
+#content table td {
   background-color: #fff493;
 }
 
-table td.output {
+#content table td.output {
   background-color: #cdff93;
+  color: #222;
+}
+
+#summary {
+  display: none;
+  -webkit-transition: all ease 200ms;
+  transition: all ease 200ms;
+}
+
+#summary .header {
+  text-align: center;
+}
+
+#summary button {
+  margin: 0 auto;
+  padding: 10px 20px;
+  background: #08f;
+  color: #fafafa;
+  font-weight: bold;
+  text-transform: uppercase;
+  border: none;
+  -webkit-transition: all ease 200ms;
+  transition: all ease 200ms;
+}
+
+#summary button:hover {
+  -webkit-transform: scale(1.05);
+          transform: scale(1.05);
+  -webkit-transition: all ease 200ms;
+  transition: all ease 200ms;
 }
 /*# sourceMappingURL=index.css.map */

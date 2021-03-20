@@ -1,71 +1,131 @@
-let k = 0
+let k = 0;
 
-let kInput = document.getElementById('kInput')
-let content = document.getElementById('content')
+let kInput = document.getElementById('kInput');
+let content = document.getElementById('content');
+let summary = document.getElementById('summary');
+let values = Array();
 
-kInput.addEventListener('change', event => {
+kInput.addEventListener('change', (event) => {
     k = parseInt(event.target.value);
-    console.log(k+1);
 
-    let table = document.createElement('table')
+    console.log(k);
+
+    values = new Array(k).fill(0).map(() => new Array(k).fill(0));
+
+    let table = document.createElement('table');
     // generate horizontal header
-    let tr = table.appendChild(document.createElement('tr'))
-    tr.appendChild(document.createElement('th'))
-    for (let x = 1; x < k+1; x++){
-        let th = document.createElement('th')
+    let tr = table.appendChild(document.createElement('tr'));
+    tr.appendChild(document.createElement('th'));
+    for (let x = 1; x < k + 1; x++) {
+        let th = document.createElement('th');
         th.innerHTML = x;
-        tr.appendChild(th)
+        tr.appendChild(th);
     }
 
     //generate vertical header and data cells
     for (let y = 1; y < k + 1; y++) {
-     // create new row
-        tr = table.appendChild(document.createElement('tr'))
-        let th = document.createElement('th')
+        // create new row
+        tr = table.appendChild(document.createElement('tr'));
+        let th = document.createElement('th');
         th.innerHTML = y;
         tr.appendChild(th);
         // generate cells
         for (let x = 1; x < k + 1; x++) {
-
             let td = document.createElement('td');
-            let input = document.createElement('input')
-            input.setAttribute('type', 'number')
-            input.setAttribute('id', 'input-' + y + '-' + x)
-            input.setAttribute('value', 0)
-            input.setAttribute('min',0)
-            input.setAttribute('onkeydown', 'if(event.keyCode==13){this.blur();checkCell(event)}')
+            let input = document.createElement('input');
+            setAttributes(input, {
+                type: 'number',
+                id: `input-${y}-${x}`,
+                value: 0,
+                min: 0,
+                onchange: 'updateCell(event)'
+            });
 
-            td.appendChild(input)
-            tr.appendChild(td)
+            td.appendChild(input);
+            tr.appendChild(td);
         }
         // create output cell
-        let td = document.createElement('td')
-        td.setAttribute('class', 'output')
-        td.setAttribute('id', 'output-h-'+y)
-        tr.appendChild(td)
+        let td = document.createElement('td');
+        setAttributes(td, { 'class': 'output', 'id': `output-h-${y}` })
+        td.innerHTML = '0'
+        tr.appendChild(td);
     }
     // generate output on bottom row
 
-    content.innerHTML = ''
+    content.innerHTML = '';
     content.appendChild(table);
-    tr = table.appendChild(document.createElement('tr'))
-    let th = document.createElement('th')
-    th.setAttribute('class','clear')
-    tr.appendChild(th)
+    tr = table.appendChild(document.createElement('tr'));
+    let th = document.createElement('th');
+    th.setAttribute('class', 'clear');
+    tr.appendChild(th);
     for (let x = 1; x < k + 1; x++) {
-
-        let td = document.createElement('td')
-        td.setAttribute('class', 'output')
-        td.setAttribute('id', 'output-v-'+x)
-        tr.appendChild(td)
+        let td = document.createElement('td');
+        setAttributes(td, { class: 'output', id: `output-v-${x}` });
+        td.innerHTML = '0'
+        tr.appendChild(td);
     }
+
+    let td = document.createElement('td');
+    setAttributes(td, { class: 'output', id: 'output' });
+    td.innerHTML = '0'
+    tr.appendChild(td);
 });
 
-function checkCell(event) {
-    let value = event.target.value
+function updateCell(event) {
+    let value = event.target.value;
+    let id = event.target.id.split('-');
+    // change value in array
+    values[id[1] - 1][id[2] - 1] = parseInt(value);
 
+    console.log();
+    // update outputs
+    let arraySum = sumArray(values)
+
+    document.getElementById(`output-v-${id[2]}`).innerHTML = sumCol(values, parseInt(id[2] - 1))
+    document.getElementById(`output-h-${id[1]}`).innerHTML = sumRow(values, parseInt(id[1] - 1))
+    document.getElementById('output').innerHTML = arraySum;
+
+    summary.style.display = 'block';
+
+
+    // handle proper display
     if (value == 0) {
         event.target.value = 0;
+    } else if (value < 0) event.target.value = 0;
+    // delete leading 0
+
+    event.target.value = event.target.value.match(new RegExp('[1-9][0-9]*'))[0]
+
+
+
+}
+
+function setAttributes(element, attributes) {
+    for (var key in attributes) {
+        element.setAttribute(key, attributes[key]);
     }
-    else if (value < 0) event.target.value = 0;
+}
+
+function sumRow(array, rowId) {
+    return array[rowId].reduce((prev, curr, id, array) => {
+        return prev + curr;
+    })
+}
+
+function sumCol(array, colId) {
+    let sum = 0
+    array.forEach(element => {
+        sum += element[colId]
+    });
+    return sum
+}
+
+function sumArray(array) {
+    let sum = 0
+    array.forEach(element => {
+        element.forEach(number => {
+            sum += number
+        })
+    });
+    return sum
 }
