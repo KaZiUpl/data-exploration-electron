@@ -139,19 +139,26 @@ function calculate() {
     for (i = 0; i < values.length; i++) {
         diagonalSum += values[i][i]
     }
-
+    let displayInPercentages = (value) => { return `${parseFloat((value * 100).toPrecision(2))}%` }
     // overall accuracy
     calc.innerHTML = `<h3>Trafność ogólna</h3>
-    <p><sup>${diagonalSum}</sup> &#8260; <sub>${sumArray(values)}</sub> = ${(diagonalSum / sumArray(values) * 100).toPrecision(2)}%</p>`
+    <p><sup>${diagonalSum}</sup> &#8260; <sub>${sumArray(values)}</sub> = ${displayInPercentages(diagonalSum / sumArray(values))}</p>`
     for (let x = 0; x < k; x++) {
+        let falsePositives = sumRow(values, x) - values[x][x];
+        let falseNegatives = sumCol(values, x) - values[x][x];
+        let trueNegatives = sumArray(values) - sumCol(values, x) - sumRow(values, x) + values[x][x];
         // accuracy for k
+        let accuracy = displayInPercentages((trueNegatives + values[x][x]) / sumArray(values))
         // specificity for k
+        let specificity = displayInPercentages(values[x][x] / (values[x][x] + falsePositives))
         //precision for k
+        let precision = displayInPercentages(trueNegatives / (trueNegatives + falseNegatives))
 
 
         calc.innerHTML += `<h4>Dla k=${x + 1}</h4>
-        <p>Trafność: <sup>${123}</sup> &#8260; <sub>${123}</sub></p>
-        <p>Czułość: <sup>${123}</sup> &#8260; <sub>${123}</sub></p>
-        <p>Swoistość: <sup>${123}</sup> &#8260; <sub>${123}</sub></p>`
+        <p>Trafność: <sup>${trueNegatives + values[x][x]}</sup> &#8260; <sub>${sumArray(values)}</sub> = ${accuracy}</p>
+        <p>Czułość: <sup>${values[x][x]}</sup> &#8260; <sub>${values[x][x] + falsePositives}</sub> = ${specificity}</p>
+        <p>Swoistość: <sup>${trueNegatives}</sup> &#8260; <sub>${trueNegatives + falseNegatives}</sub> = ${precision}</p>`
     }
 }
+
