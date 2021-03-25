@@ -3,6 +3,8 @@ let k = 0;
 let kInput = document.getElementById('kInput');
 let content = document.getElementById('content');
 let summary = document.getElementById('summary');
+let calc = document.getElementById('calculations')
+
 let values = Array();
 
 kInput.addEventListener('change', (event) => {
@@ -88,6 +90,7 @@ function updateCell(event) {
     summary.style.display = 'block';
 
 
+
     // handle proper display
     if (value == 0) {
         event.target.value = 0;
@@ -128,4 +131,27 @@ function sumArray(array) {
         })
     });
     return sum
+}
+
+function calculate() {
+
+    let diagonalSum = 0;
+    for (i = 0; i < values.length; i++) {
+        diagonalSum += values[i][i]
+    }
+
+    // overall accuracy
+    calc.innerHTML = `<h3>Trafność ogólna</h3>
+    <p><sup>${diagonalSum}</sup> &#8260; <sub>${sumArray(values)}</sub> = ${(diagonalSum / sumArray(values) * 100).toPrecision(2)}%</p>`
+    for (let x = 0; x < k; x++) {
+        // accuracy for k
+        // specificity for k
+        //precision for k
+
+
+        calc.innerHTML += `<h4>Dla k=${x + 1}</h4>
+        <p>Trafność: <sup>${123}</sup> &#8260; <sub>${123}</sub></p>
+        <p>Czułość: <sup>${123}</sup> &#8260; <sub>${123}</sub></p>
+        <p>Swoistość: <sup>${123}</sup> &#8260; <sub>${123}</sub></p>`
+    }
 }

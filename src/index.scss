@@ -98,8 +98,11 @@ input {
 
 #summary {
   display: none;
-
   transition: all ease 200ms;
+
+  #calculations {
+    text-align: justify;
+  }
   .header {
     text-align: center;
   }

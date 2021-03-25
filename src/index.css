@@ -124,6 +124,10 @@ input {
   transition: all ease 200ms;
 }
 
+#summary #calculations {
+  text-align: justify;
+}
+
 #summary .header {
   text-align: center;
 }
