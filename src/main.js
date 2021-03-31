@@ -9,6 +9,8 @@ let values = Array();
 
 kInput.addEventListener('change', (event) => {
     k = parseInt(event.target.value);
+    calc.innerHTML = ''
+    summary.style.display = 'none';
 
     values = new Array(k).fill(0).map(() => new Array(k).fill(0));
 
@@ -87,8 +89,6 @@ function updateCell(event) {
 
     summary.style.display = 'block';
 
-
-
     // handle proper display
     if (value == 0) {
         event.target.value = 0;
@@ -129,7 +129,6 @@ function sumArray(array) {
 }
 
 function calculate() {
-
     let diagonalSum = 0;
     for (i = 0; i < values.length; i++) {
         diagonalSum += values[i][i]
@@ -138,7 +137,6 @@ function calculate() {
     // overall accuracy
     calc.innerHTML = `<h3>Trafność ogólna</h3>
     <p><sup>${diagonalSum}</sup> &#8260; <sub>${sumArray(values)}</sub> = ${displayInPercentages(diagonalSum / sumArray(values))}</p>`
-
 
     calc.appendChild(generateTabsForAllClasses())
 
@@ -156,11 +154,9 @@ function generateTabsForAllClasses() {
     tabsContent.classList.add('tabs-content')
 
     for (let x = 0; x < k; x++) {
-
         tabsNavigation.appendChild(createTabButtonForClass(x))
         tabsContent.appendChild(createTabContentForClass(x))
     }
-
     tabs.appendChild(tabsNavigation)
     tabs.appendChild(tabsContent)
 
@@ -170,7 +166,7 @@ function generateTabsForAllClasses() {
 function createTabButtonForClass(classNumber) {
     let button = document.createElement('div')
     setAttributes(button, { class: 'tab-button', id: `button${classNumber}`, onclick: `openTab('${classNumber}')` })
-    button.innerHTML = `${classNumber}`
+    button.innerHTML = `Klasa ${classNumber}`
 
     return button;
 }
