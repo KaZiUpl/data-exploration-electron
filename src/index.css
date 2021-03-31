@@ -150,4 +150,58 @@ input {
   -webkit-transition: all ease 200ms;
   transition: all ease 200ms;
 }
+
+.tabs {
+  border: #333 solid 2px;
+  border-radius: 1px;
+}
+
+.tabs .tabs-nav {
+  background-color: #333;
+  border-radius: 1px;
+}
+
+.tabs .tabs-nav .tab-button {
+  border: none;
+  display: inline-block;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 5px 10px;
+  text-align: center;
+  cursor: default;
+}
+
+.tabs .tabs-nav .tab-button:not(.active) {
+  cursor: pointer;
+  -webkit-transition: all ease-in-out 200ms;
+  transition: all ease-in-out 200ms;
+}
+
+.tabs .tabs-nav .tab-button:not(.active):hover {
+  background-color: rgba(255, 136, 0, 0.637);
+  -webkit-transition: all ease-in-out 200ms;
+  transition: all ease-in-out 200ms;
+}
+
+.tabs .tabs-nav .tab-button.active {
+  background-color: #f80;
+}
+
+.tabs .tabs-content {
+  border-radius: 1px;
+  position: relative;
+  min-height: 250px;
+}
+
+.tabs .tabs-content .tab {
+  padding: 5px;
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.tabs .tabs-content .tab.active {
+  display: block;
+}
 /*# sourceMappingURL=index.css.map */

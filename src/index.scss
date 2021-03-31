@@ -122,3 +122,53 @@ input {
     }
   }
 }
+
+.tabs {
+  border: #333 solid 2px;
+  border-radius: 1px;
+
+  .tabs-nav {
+    background-color: #333;
+    border-radius: 1px;
+
+    .tab-button {
+      border: none;
+      display: inline-block;
+      box-sizing: border-box;
+      padding: 5px 10px;
+      text-align: center;
+      cursor: default;
+
+      &:not(.active) {
+        cursor: pointer;
+        transition: all ease-in-out 200ms;
+
+        &:hover {
+          background-color: rgba(255, 136, 0, 0.637);
+          transition: all ease-in-out 200ms;
+        }
+      }
+
+      &.active {
+        background-color: #f80;
+      }
+    }
+  }
+  .tabs-content {
+    border-radius: 1px;
+    position: relative;
+    min-height: 250px;
+
+    .tab {
+      padding: 5px;
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      &.active {
+        display: block;
+      }
+    }
+  }
+}

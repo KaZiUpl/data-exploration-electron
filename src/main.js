@@ -10,8 +10,6 @@ let values = Array();
 kInput.addEventListener('change', (event) => {
     k = parseInt(event.target.value);
 
-    console.log(k);
-
     values = new Array(k).fill(0).map(() => new Array(k).fill(0));
 
     let table = document.createElement('table');
@@ -98,9 +96,6 @@ function updateCell(event) {
     // delete leading 0
 
     event.target.value = event.target.value.match(new RegExp('[1-9][0-9]*'))[0]
-
-
-
 }
 
 function setAttributes(element, attributes) {
@@ -139,26 +134,84 @@ function calculate() {
     for (i = 0; i < values.length; i++) {
         diagonalSum += values[i][i]
     }
-    let displayInPercentages = (value) => { return `${parseFloat((value * 100).toPrecision(2))}%` }
+    let displayInPercentages = (value) => { return `${parseFloat((value * 100).toPrecision(4))}%` }
     // overall accuracy
     calc.innerHTML = `<h3>Trafność ogólna</h3>
     <p><sup>${diagonalSum}</sup> &#8260; <sub>${sumArray(values)}</sub> = ${displayInPercentages(diagonalSum / sumArray(values))}</p>`
+
+
+    calc.appendChild(generateTabsForAllClasses())
+
+    document.getElementById('class0').classList.add('active')
+    document.getElementById('button0').classList.add('active')
+}
+function generateTabsForAllClasses() {
+    let tabs = document.createElement('div')
+    tabs.classList.add('tabs')
+
+    let tabsNavigation = document.createElement('div')
+    tabsNavigation.classList.add('tabs-nav')
+
+    let tabsContent = document.createElement('div')
+    tabsContent.classList.add('tabs-content')
+
     for (let x = 0; x < k; x++) {
-        let falsePositives = sumRow(values, x) - values[x][x];
-        let falseNegatives = sumCol(values, x) - values[x][x];
-        let trueNegatives = sumArray(values) - sumCol(values, x) - sumRow(values, x) + values[x][x];
-        // accuracy for k
-        let accuracy = displayInPercentages((trueNegatives + values[x][x]) / sumArray(values))
-        // specificity for k
-        let specificity = displayInPercentages(values[x][x] / (values[x][x] + falsePositives))
-        //precision for k
-        let precision = displayInPercentages(trueNegatives / (trueNegatives + falseNegatives))
 
-
-        calc.innerHTML += `<h4>Dla k=${x + 1}</h4>
-        <p>Trafność: <sup>${trueNegatives + values[x][x]}</sup> &#8260; <sub>${sumArray(values)}</sub> = ${accuracy}</p>
-        <p>Czułość: <sup>${values[x][x]}</sup> &#8260; <sub>${values[x][x] + falsePositives}</sub> = ${specificity}</p>
-        <p>Swoistość: <sup>${trueNegatives}</sup> &#8260; <sub>${trueNegatives + falseNegatives}</sub> = ${precision}</p>`
+        tabsNavigation.appendChild(createTabButtonForClass(x))
+        tabsContent.appendChild(createTabContentForClass(x))
     }
+
+    tabs.appendChild(tabsNavigation)
+    tabs.appendChild(tabsContent)
+
+    return tabs;
+}
+
+function createTabButtonForClass(classNumber) {
+    let button = document.createElement('div')
+    setAttributes(button, { class: 'tab-button', id: `button${classNumber}`, onclick: `openTab('${classNumber}')` })
+    button.innerHTML = `${classNumber}`
+
+    return button;
+}
+
+function createTabContentForClass(classNumber) {
+    let tab = document.createElement('div')
+    setAttributes(tab, { class: 'tab', id: `class${classNumber}` })
+
+    let displayInPercentages = (value) => { return `${parseFloat((value * 100).toPrecision(4))}%` }
+
+    let falsePositives = sumRow(values, classNumber) - values[classNumber][classNumber];
+    let falseNegatives = sumCol(values, classNumber) - values[classNumber][classNumber];
+    let trueNegatives = sumArray(values) - sumCol(values, classNumber) - sumRow(values, classNumber) + values[classNumber][classNumber];
+    // accuracy for k
+    let accuracy = displayInPercentages((trueNegatives + values[classNumber][classNumber]) / sumArray(values))
+    // specificity for k
+    let specificity = displayInPercentages(values[classNumber][classNumber] / (values[classNumber][classNumber] + falsePositives))
+    //precision for k
+    let precision = displayInPercentages(trueNegatives / (trueNegatives + falseNegatives))
+
+    tab.innerHTML += `<h4>Dla k=${classNumber + 1}</h4>
+    <p>Trafność: <sup>${trueNegatives + values[classNumber][classNumber]}</sup> &#8260; <sub>${sumArray(values)}</sub> = ${accuracy}</p>
+    <p>Czułość: <sup>${values[classNumber][classNumber]}</sup> &#8260; <sub>${values[classNumber][classNumber] + falsePositives}</sub> = ${specificity}</p>
+    <p>Swoistość: <sup>${trueNegatives}</sup> &#8260; <sub>${trueNegatives + falseNegatives}</sub> = ${precision}</p>`
+
+    return tab;
+}
+
+
+function openTab(tabId) {
+    //show appropriate tab
+    let newTab = document.getElementById(`class${tabId}`)
+    let newButton = document.getElementById(`button${tabId}`)
+
+    let activeTab = document.getElementsByClassName('tab active')[0]
+    let activeButton = document.getElementsByClassName('tab-button active')[0]
+
+    if (activeTab) activeTab.classList.remove('active')
+    if (activeButton) activeButton.classList.remove('active')
+
+    newButton.classList.add('active')
+    newTab.classList.add('active')
 }
 
